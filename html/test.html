@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <style>
+      body{
+        background-color: aliceblue;
+      }
+    </style>
+
+  </head>
+  <body>
+    <canvas id="chart" width="1000" height="1000"></canvas>
+
+</body>
+  <script>
+    var bar_ctx = document.getElementById('chart').getContext('2d');
+
+var background_1 = bar_ctx.createLinearGradient(0, 0, 0, 600);
+background_1.addColorStop(0, 'red');
+background_1.addColorStop(1, 'blue');
+
+var background_2 = bar_ctx.createLinearGradient(0, 0, 0, 600);
+background_2.addColorStop(0, 'green');
+background_2.addColorStop(1, 'orange');
+
+var background_3 = bar_ctx.createLinearGradient(0, 0, 0, 600);
+background_3.addColorStop(0, 'orange');
+background_3.addColorStop(1, 'purple');
+
+var background_4 = bar_ctx.createLinearGradient(0, 0, 0, 600);
+background_4.addColorStop(0, '#CAD664');
+background_4.addColorStop(0.5, 'transparent');
+
+const images = ['https://i.stack.imgur.com/2RAv2.png', 'https://i.stack.imgur.com/Tq5DA.png', 'https://i.stack.imgur.com/3KRtW.png', 'https://i.stack.imgur.com/iLyVi.png'];
+
+
+/* data */
+var data = {
+  labels: ["", "", "", ""],
+  labelsData: ["270分", "180分", "160分", "280分"],
+  datalabels: {
+          display: true
+        },
+  datasets: [{
+    /* data */
+    fillColor: "#79D1CF",
+            strokeColor: "#79D1CF",
+    backgroundColor: [background_1, background_2, background_3, background_4],
+    data: [40,60,80, 100],
+    borderColor:'rgba(255, 255, 255, 1)',
+    borderWidth:1
+  }]
+};
+
+var options = {
+  responsive: true,
+  legend: {
+            display: false
+         },
+
+  scales: {
+    xAxes: [{
+      gridLines:{
+        display:false
+      },
+      ticks: {
+        display:true
+
+      },
+    }],
+    yAxes: [{
+      stacked: true,
+      gridLines:{
+        display:false
+      },
+      ticks: {
+        display:false
+
+      },
+    }],
+    
+  }
+};
+
+var myChart = new Chart(document.getElementById("chart"), {
+  type: 'bar',
+  plugins: [{
+    afterDraw: chart => {      
+      var ctx = chart.chart.ctx; 
+      var xAxis = chart.scales['x-axis-0'];
+      var yAxis = chart.scales['y-axis-0'];
+      xAxis.ticks.forEach((value, index) => {  
+        var x = xAxis.getPixelForTick(index);      
+        var image = new Image();
+        image.src = images[index],
+        ctx.drawImage(image, x - 12, yAxis.bottom + 10);
+        
+      });   
+         
+    },
+  }],
+  data: data,
+  options: options
+});
+  </script>
+</html>
